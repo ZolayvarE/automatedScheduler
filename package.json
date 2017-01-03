@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "broadcast": "node index.js broadcast",
+    "check": "node index.js check",
     "commit": "(git add . || true) && (git commit || true) && (git push origin master || true)",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
