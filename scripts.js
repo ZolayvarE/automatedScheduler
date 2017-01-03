@@ -49,6 +49,10 @@ var random = function (array) {
 };
 
 var r = function (...input) {
+  if (input.length === 1 && Array.isArray(input[0])) {
+    input = input[0];
+  }
+
   return random(input);
 };
 
@@ -97,7 +101,7 @@ var sendEmail = function (array) {
       }).join(',\n'),
       '\n',
       'Thanks!\n',
-      'Eric Zolayvar'
+      credentials.signature
     ].join('');
   }
 
