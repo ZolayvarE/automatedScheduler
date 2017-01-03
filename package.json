@@ -1,0 +1,20 @@
+{
+  "name": "open-interview-finder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "commit": "(git add . || true) && (git commit || true) && (git push origin master || true)",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Zolayvar",
+  "license": "MIT",
+  "dependencies": {
+    "nightmare": "^2.8.1",
+    "nodemailer": "^2.6.4"
+  },
+  "devDependencies": {
+    "webpack": "^1.14.0"
+  }
+}
