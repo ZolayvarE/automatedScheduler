@@ -1,3 +1,5 @@
+console.log(process.argv)
+
 var scrape = require('./scraper.js');
 var scripts = require('./scripts.js');
 var rl = require('readline').createInterface({
@@ -20,7 +22,7 @@ scrape(targetDate, function (err, data) {
     rl.question('\nAre you sure you want to send this e-mail? (Y/N) ',
     function (answer) {
       answer = answer.toUpperCase();
-      if (answer === 'Y' || answer === 'YES') {
+      if (process.argv.slice(-1)[0] === 'f' || answer === 'Y' || answer === 'YES') {
         scripts.sendEmail(data);
         console.log('\nE-mail sent!\n\n');
         rl.close();
