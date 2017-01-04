@@ -21,7 +21,7 @@ scrape(targetDate, function (err, data) {
     function (answer) {
       answer = answer.toUpperCase();
       if (answer === 'Y' || answer === 'YES') {
-        // scripts.sendEmail(data);
+        scripts.sendEmail(data);
         console.log('\nE-mail sent!\n\n');
         rl.close();
       } else {
