@@ -119,6 +119,16 @@ var sendEmail = function (array) {
 
 //////////////////////////////////////////////////////////////////////////
 
+console.clear = function () {
+  var whiteScreen = '';
+  while (whiteScreen.length < 1000) {
+    whiteScreen += '#';
+  }
+  console.log(whiteScreen);
+  console.log('\033[2J');
+};
+
+//////////////////////////////////////////////////////////////////////////
 
 module.exports = {
   date: todaysDateToGoogleNumber,

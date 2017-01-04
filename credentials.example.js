@@ -3,3 +3,6 @@ module.exports = {
   password: 'YOUR_GOOGLE_PASSWORD_GOES_HERE',
   signature: 'YOUR_EMAIL_SIGNATURE_GOES_HERE'
 };
+
+
+

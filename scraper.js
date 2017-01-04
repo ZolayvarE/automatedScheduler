@@ -1,14 +1,56 @@
 var scripts = require('./scripts.js');
 var Nightmare = require('nightmare');
-var browser = new Nightmare({ 
-  show: true 
+var credentials = require('./credentials.js');
+var browser = new Nightmare({
+  show: true
 });
 
 var scraper = function (targetDate, callback) {
 
   browser
+    .cookies.clearAll()
+    .goto('https://accounts.google.com/ServiceLogin')
+    .cookies.set([{
+      name: 'username',
+      value: credentials.username,
+      secure: false
+    }, {
+      name: 'password',
+      value: credentials.password,
+      secure: false
+    }])
+    .evaluate(function () {
+      var cookies = {};
+      document.cookie
+        .split('; ')
+        .forEach(function (cookie) {
+          let equalsIndex = cookie.indexOf('=');
+          let key = cookie.slice(0, equalsIndex);
+          let value = cookie.slice(equalsIndex + 1);
+          cookies[key] = value;
+        });
+
+      (function login () {
+        if (document.querySelector('#Email')) {
+          document.querySelector('#Email').value = cookies.username;
+          document.querySelector('#next').click();
+        }
+
+        if (document.querySelector('#Passwd')) {
+          document.querySelector('#Passwd').value = cookies.password;
+          document.querySelector('#next').click();
+        }
+        
+        if (document.querySelector('#next')) {
+          setTimeout(login, 500);
+        }
+      })();
+    })
+    .wait(function () {
+      return location.hostname !== 'accounts.google.com';
+    })
     .goto('https://calendar.google.com/calendar/render#main_7%7Csearch-1+' + 23943 + '+' + 23943 + '+' + 23943 + '-y++all+interview%20duty++++' + targetDate + '+' + targetDate + '+1+7')
-    .wait(10000)
+    .wait('.lv-event-time')
     .evaluate(function () {
       localStorage.removeItem('slots');
 
@@ -38,7 +80,7 @@ var scraper = function (targetDate, callback) {
       localStorage.slots = JSON.stringify(slots);
     })
     .goto('https://calendar.google.com/calendar/render#main_7%7Csearch-1+23943+23943+23943-y++all+applicant%20interview++++' + targetDate + '+' + targetDate + '+1+7')
-    .wait(10000)
+    .wait('.lv-event-time')
     .evaluate(function () {
       var elements = document.querySelectorAll('.lv-event-time');
       
@@ -70,7 +112,6 @@ var scraper = function (targetDate, callback) {
     })
     .end()
     .then(function (data) {
-
       while (data.slots[0] && data.slots[0].time.slice(-2) === 'pm') {
         data.slots.shift();
       }
@@ -90,6 +131,7 @@ var scraper = function (targetDate, callback) {
       callback(null, openSlots);
     })
     .catch(function (error) {
+      // console.log(error);
       callback(error, null);
     });
     
