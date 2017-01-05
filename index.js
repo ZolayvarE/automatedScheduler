@@ -1,5 +1,3 @@
-console.log(process.argv)
-
 var scrape = require('./scraper.js');
 var scripts = require('./scripts.js');
 var rl = require('readline').createInterface({
