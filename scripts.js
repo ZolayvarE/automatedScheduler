@@ -58,7 +58,7 @@ var r = function (...input) {
   return random(input);
 };
 
-var generateEmailBody = function (array) {
+var populateEmailText = function (array) {
   if (!array.length) {
     mailOptions.subject = 'No Free HiRs';
     mailOptions.text = 'All of our HiRs are all fully booked today.\n\nSorry!\nEric Zolayvar';
@@ -114,19 +114,18 @@ var submitEmail = function () {
       throw new Error(error);
     } else {
       console.log('\nE-mail sent!\n\n');
-      // console.log(response);
+      console.log(response);
     }
   });
 }
 
 var sendEmail = function (data) {
-  generateEmailBody(data);
+  populateEmailText(data);
 
   console.clear();
   console.log(data);
   if (process.argv.includes('f')) {
-    console.log('\nE-mail sent!\n\n');
-    // submitEmail();
+    submitEmail();
   } else {
     var rl = require('readline').createInterface({
       input: process.stdin,
@@ -137,8 +136,7 @@ var sendEmail = function (data) {
       answer = answer.toUpperCase();
 
       if (answer === 'Y' || answer === 'YES') {
-        console.log('\nE-mail sent!\n\n');
-        // submitEmail();
+        submitEmail();
       } else {
         console.log('\nAborting...\n\n');
       }
