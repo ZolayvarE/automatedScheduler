@@ -1,3 +1,5 @@
+console.log(process.argv)
+
 var todaysDateToGoogleNumber = function (incrementBy) {
   if (typeof incrementBy !== typeof 7) {
     incrementBy = 0;
@@ -56,7 +58,7 @@ var r = function (...input) {
   return random(input);
 };
 
-var sendEmail = function (array) {
+var generateEmailBody = function (array) {
   if (!array.length) {
     mailOptions.subject = 'No Free HiRs';
     mailOptions.text = 'All of our HiRs are all fully booked today.\n\nSorry!\nEric Zolayvar';
@@ -104,16 +106,47 @@ var sendEmail = function (array) {
       credentials.signature
     ].join('');
   }
+};
 
-  // console.log(mailOptions.text);
-
+var submitEmail = function () {
   transporter.sendMail(mailOptions, function (error, response) {
     if (error) {
       throw new Error(error);
     } else {
-      console.log(response);
+      console.log('\nE-mail sent!\n\n');
+      // console.log(response);
     }
   });
+}
+
+var sendEmail = function (data) {
+  generateEmailBody(data);
+
+  console.clear();
+  console.log(data);
+  if (process.argv.includes('f')) {
+    console.log('\nE-mail sent!\n\n');
+    // submitEmail();
+  } else {
+    var rl = require('readline').createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.question('\nAre you sure you want to send this e-mail? (Y/N) ', function (answer) {
+      answer = answer.toUpperCase();
+
+      if (answer === 'Y' || answer === 'YES') {
+        console.log('\nE-mail sent!\n\n');
+        // submitEmail();
+      } else {
+        console.log('\nAborting...\n\n');
+      }
+
+      rl.close();
+    });
+  }
+
 };
 
 
